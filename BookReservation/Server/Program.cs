@@ -1,6 +1,4 @@
-using BookReservation.Data.Context;
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.EntityFrameworkCore;
+using BookReservation.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,10 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-builder.Services.AddDbContext<ReservationDbContext>(config =>
-{
-    config.UseSqlServer("Data Source=localhost; Initial Catalog=BookReservation; User Id=sa; Password=P@ssword1*");
-});
+builder.Services.ServiceIntegrationData();
 
 var app = builder.Build();
 
