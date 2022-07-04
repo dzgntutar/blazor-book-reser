@@ -1,17 +1,24 @@
 using BookReservation.Data;
+using BookReservation.Server.Services.Abstract;
+using BookReservation.Server.Services.Concrete;
+using BookReservation.Server.Services.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+//--------------
+builder.Services.ConfigureMapping();
+
 builder.Services.ServiceIntegrationData();
+
+builder.Services.AddScoped<IBookService, BookService>();
+//--------------
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
@@ -19,7 +26,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
