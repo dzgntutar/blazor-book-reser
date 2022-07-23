@@ -6,4 +6,23 @@
 
 Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
+<br />
+<br />
+
+
+
+<AddButtonComponent Text="Ekle" OnClick="Save" Color="primary" />
+
+
+
+
+@*<SurveyPrompt Title="How is Blazor working for you?" />*@
+
+
+@code {
+	private async Task Save()
+	{
+		Console.WriteLine("Button clicked");
+	}
+}

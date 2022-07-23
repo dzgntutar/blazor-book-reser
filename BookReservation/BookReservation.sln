@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookReservation.Client", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookReservation.Shared", "Shared\BookReservation.Shared.csproj", "{9221A2D5-1916-43D6-8FB0-2905FEDC3507}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookReservation.Data", "BookReservation.Data\BookReservation.Data.csproj", "{44D964EE-3499-445B-AE95-81F10974E06D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookReservation.Data", "BookReservation.Data\BookReservation.Data.csproj", "{44D964EE-3499-445B-AE95-81F10974E06D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EAC2A1E4-68DE-4044-81EB-C1515808E810}"
 	ProjectSection(SolutionItems) = preProject

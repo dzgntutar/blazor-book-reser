@@ -1,0 +1,29 @@
+﻿@code
+{
+    [Parameter]
+    public String Text { get; set; }
+
+    [Parameter]
+    public String Color { get; set; }
+
+    [Parameter]
+    public String Icon { get; set; }
+
+    [Parameter]
+    public String ToolTip { get; set; }
+
+    [Parameter]
+    public bool IsSmall { get; set; }
+
+    [Parameter]
+    public bool IsOutline { get; set; }
+
+    [Parameter]
+    public bool IsBusy { get; set; }
+
+    [Parameter]
+    public String BusyText { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+}
