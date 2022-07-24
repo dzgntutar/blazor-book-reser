@@ -1,3 +1,4 @@
+using Blazored.Modal;
 using BookReservation.Data;
 using BookReservation.Server.Services.Abstract;
 using BookReservation.Server.Services.Concrete;
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddBlazoredModal();
 
 //--------------
 builder.Services.ConfigureMapping();
