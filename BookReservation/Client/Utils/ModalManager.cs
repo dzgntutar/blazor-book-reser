@@ -26,5 +26,16 @@ namespace BookReservation.Client.Utils
                 modalRef.Close();
             }
         }
+
+        public async Task<bool> ConfirmationAsync(String Title, String Message)
+        {
+            ModalParameters mParams = new ModalParameters();
+            mParams.Add("Message", Message);
+
+            var modalRef = modalService.Show<ConfirmationPopupComponent>(Title, mParams);
+            var modalResult = await modalRef.Result;
+
+            return !modalResult.Cancelled;
+        }
     }
 }

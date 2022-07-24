@@ -5,34 +5,36 @@
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
 
 
 <br />
 <br />
 
 
+<div class="row">
+	<AddButtonComponent Text="Ekle" OnClick="Save" Color="primary" />
+</div>
 
-<AddButtonComponent Text="Ekle" OnClick="Save" Color="primary" />
 
+<div class="row">
+	<SurveyPrompt Title="How is Blazor working for you?" />
+	<SurveyPrompt />
+</div>
 
-
-
-@*<SurveyPrompt Title="How is Blazor working for you?" />*@
 
 
 @code {
 
 	[CascadingParameter]
-    IModalService Modal { get; set; }
+	IModalService Modal { get; set; }
 
 	[Inject]
-	ModalManager _modalManager { get; set; }
+	ModalManager ModalManager { get; set; }
 
 	private async Task Save()
 	{
 		Console.WriteLine("Button clicked");
 
-		_modalManager.ShowMessageAsync("Deneme", "Deneme içerik", 0);
+		ModalManager.ShowMessageAsync("Deneme", "Deneme içerik", 0);
 	}
 }
