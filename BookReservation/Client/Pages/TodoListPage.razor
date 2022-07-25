@@ -3,17 +3,49 @@
 <h3>TodoListPage</h3>
 
 <div class="row">
-	<TodoComponent BgColor="secondary" Title="Test 1" Description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using" Status="Tamamlandı"/>
+	@*<TodoComponent BgColor="secondary" Title="Test 1" Description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using" Status="Tamamlandı"/>
 	<TodoComponent BgColor="danger" Title="Test 2" Description="" Status="Geçti"/>
 	<TodoComponent BgColor="secondary" Title="Test 3" Description="" Status="Tamamlandı"/>
 	<TodoComponent BgColor="secondary" Title="Test 4" Description="" Status="Tamamlandı"/>
 	<TodoComponent BgColor="warning" Title="Test 5" Description="" Status="Az Kaldı"/>
-	<TodoComponent BgColor="secondary" Title="Test 6" Description="" Status="Tamamlandı"/>
+	<TodoComponent BgColor="secondary" Title="Test 6" Description="" Status="Tamamlandı"/>*@
+
+	@{
+		if (TodoList.Count > 0)
+			foreach (var todo in TodoList)
+			{
+				<TodoComponent BgColor="primary" Title="@todo.Title" Description="" Status="Tamamlandı" />
+			}
+	}
+
 
 </div>
 
 @code {
 
-	
+	List<Todo> TodoList = new List<Todo>();
+
+	protected async override Task OnInitializedAsync()
+	{
+		await Task.Delay(10000);
+
+		TodoList.Add(new Todo
+			{
+				Id = 1,
+				Title = "Selam",
+				Description = ""
+			});
+	}
+
+	//protected override void OnInitialized()
+	//{
+	//	TodoList.Add(new Todo
+	//		{
+	//			Id = 1,
+	//			Title = "Selam",
+	//			Description = ""
+	//		});
+	//	base.OnInitialized();
+		//}
 
 }
