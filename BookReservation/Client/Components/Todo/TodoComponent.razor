@@ -1,0 +1,28 @@
+﻿
+<div class="card mb-3 mr-3 bg-@BgColor text-dark" style="max-width: 18rem; margin-right:1em; border-radius:30px">
+	<div class="card-body ">
+		<h5 class="card-title text-light">@Title</h5>
+		<h6 class="card-subtitle mb-2 text-light">@Status</h6>
+		<p class="card-text">@Description</p>
+
+		
+
+		<a class="btn btn-success">Done</a>
+		<a class="btn btn-success">Delete</a>
+	</div>
+</div>
+
+@code {
+
+	[Parameter]
+	public string BgColor { get; set; }
+
+	[Parameter]
+	public string Title { get; set; }
+
+	[Parameter]
+	public string Description { get; set; }
+
+	[Parameter]
+	public string Status { get; set; }
+}
