@@ -1,5 +1,4 @@
 ﻿@page "/todo-list"
-@using BookReservation.Client.TodoData
 
 <h3>TodoListPage</h3>
 
@@ -15,13 +14,18 @@
 		if (TodoList.Count > 0)
 			foreach (var todo in TodoList)
 			{
-				<TodoComponent BgColor="@(todo.Statu switch {
-															TaskStatu.Todo => "warning",
-															TaskStatu.Inprogress => "secondary",
-															TaskStatu.Completed => "primary",
-															_ => "primary"
+				<TodoComponent 
+								BgColor="@(todo.Statu switch {
+																TaskStatu.Todo => "warning",
+																TaskStatu.Inprogress => "secondary",
+																TaskStatu.Completed => "primary",
+																_ => "primary"
 															}
-										)" Title="@todo.Title" Description="" Status="Tamamlandı" />
+										)" 
+								Title="@todo.Title" 
+								Description="@todo.Description"
+								Status="@(todo.Statu.ToString())" 
+				/>
 			}
 	}
 
