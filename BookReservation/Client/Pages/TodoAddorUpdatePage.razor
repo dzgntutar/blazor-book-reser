@@ -1,0 +1,11 @@
+﻿@page "/todo/add"
+@page "/todo/update/{TodoId:int}"
+
+<h3>TodoAddorUpdatePage</h3>
+
+@code {
+
+	[Parameter]
+	public int TodoId { get; set; }
+
+}

@@ -1,54 +1,58 @@
 ﻿@page "/todo-list"
 
-<h3>TodoListPage</h3>
-
-<div class="row">
-	@*<TodoComponent BgColor="secondary" Title="Test 1" Description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using" Status="Tamamlandı"/>
-	<TodoComponent BgColor="danger" Title="Test 2" Description="" Status="Geçti"/>
-	<TodoComponent BgColor="secondary" Title="Test 3" Description="" Status="Tamamlandı"/>
-	<TodoComponent BgColor="secondary" Title="Test 4" Description="" Status="Tamamlandı"/>
-	<TodoComponent BgColor="warning" Title="Test 5" Description="" Status="Az Kaldı"/>
-	<TodoComponent BgColor="secondary" Title="Test 6" Description="" Status="Tamamlandı"/>*@
-
-	@{
-		if (TodoList.Count > 0)
-			foreach (var todo in TodoList)
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<input class="btn btn-primary btn-sm" type="button" @onclick="GoToTodoAddPage" value="Add New">
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		@{
+			if (TodoList.Count > 0)
 			{
-				<TodoComponent 
-								BgColor="@(todo.Statu switch {
-																TaskStatu.Todo => "warning",
-																TaskStatu.Inprogress => "secondary",
-																TaskStatu.Completed => "primary",
-																_ => "primary"
-															}
-										)" 
-								Title="@todo.Title" 
-								Description="@todo.Description"
-								Status="@(todo.Statu.ToString())" 
-				/>
+				foreach (var todo in TodoList)
+				{
+					<TodoComponent BgColor="@(todo.Statu switch {
+																	TaskStatu.Todo => "warning",
+																	TaskStatu.Inprogress => "secondary",
+																	TaskStatu.Completed => "primary",
+																	_ => "primary"
+																})" Title="@todo.Title" Description="@todo.Description" Status="@(todo.Statu.ToString())" />
+				}
 			}
-	}
-
-
+		}
+	</div>
 </div>
 
+
+
 @code {
+
+	[Inject]
+	NavigationManager NavigationManager { get; set; }
+
 	List<Todo> TodoList = new List<Todo>();
 	protected async override Task OnInitializedAsync()
 	{
 		await Task.Delay(10000);
 		//TodoList.Add(new Todo
-		//	{
-		//		Id = 1,
-		//		Title = "Selam",
-		//		Description = ""
-		//	});
+		// {
+		// Id = 1,
+		// Title = "Selam",
+		// Description = ""
+		// });
 	}
 
 	protected override void OnInitialized()
 	{
 		TodoList = TodoCacheData.TodoList();
 		base.OnInitialized();
+	}
+
+	private void GoToTodoAddPage()
+	{
+		NavigationManager.NavigateTo("/todo/add");
 	}
 
 }
