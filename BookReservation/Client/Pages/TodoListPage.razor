@@ -13,12 +13,7 @@
 			{
 				foreach (var todo in TodoList)
 				{
-					<TodoComponent BgColor="@(todo.Statu switch {
-																	TaskStatu.Todo => "warning",
-																	TaskStatu.Inprogress => "secondary",
-																	TaskStatu.Completed => "primary",
-																	_ => "primary"
-																})" Title="@todo.Title" Description="@todo.Description" Status="@(todo.Statu.ToString())" />
+					<TodoComponent Todo="@todo" />
 				}
 			}
 		}
@@ -46,7 +41,10 @@
 
 	protected override void OnInitialized()
 	{
-		TodoList = TodoCacheData.TodoList();
+		TodoList = TodoMemoryData.TodoList();
+
+		TodoList.ForEach(s => Console.WriteLine($"{s.Id} {s.Title}"));
+
 		base.OnInitialized();
 	}
 

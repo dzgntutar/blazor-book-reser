@@ -1,14 +1,18 @@
-﻿<div class="card mb-3 mr-3 bg-@BgColor text-dark text-center"
-	style="max-width: 18rem; margin-right:1em; border-radius:18px">
+﻿<div class="card mb-3 mr-3 text-dark text-center bg-@(Todo.Statu switch {
+																	TaskStatu.Todo => "warning",
+																	TaskStatu.Inprogress => "secondary",
+																	TaskStatu.Completed => "primary",
+																	_ => "primary"
+																}) " style="max-width: 18rem; margin-right:1em; border-radius:18px">
 	<div class="card-header">
-		<h5 class="card-title text-light">@Title</h5>
-		<h6 class="card-subtitle mb-2 text-light">@Status</h6>
+		<h5 class="card-title text-light">@Todo.Title</h5>
+		<h6 class="card-subtitle mb-2 text-light">@(Todo.Statu.ToString())</h6>
 	</div>
 	<div class="card-body ">
-		<p class="card-text">@Description</p>
+		<p class="card-text">@Todo.Description</p>
 	</div>
 	<div class="card-footer">
-		<a class="btn btn-success">Done</a>
+		<a class="btn btn-success" @onclick="(() => UpdateTodo(Todo.Id))">Update</a>
 		<a class="btn btn-success">Delete</a>
 	</div>
 </div>
@@ -19,11 +23,15 @@
 	public string BgColor { get; set; }
 
 	[Parameter]
-	public string Title { get; set; }
+	public Todo Todo { get; set; }
 
-	[Parameter]
-	public string Description { get; set; }
+	[Inject]
+	NavigationManager NavigationManager { get; set; }
 
-	[Parameter]
-	public string Status { get; set; }
+	private void UpdateTodo(int Id)
+	{
+		Console.WriteLine(Id);
+
+		NavigationManager.NavigateTo($"/todo/update/{Id}");
+	}
 }

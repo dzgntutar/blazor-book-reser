@@ -1,11 +1,65 @@
 ﻿@page "/todo/add"
 @page "/todo/update/{TodoId:int}"
 
-<h3>TodoAddorUpdatePage</h3>
+
+<EditForm Model="@model" OnValidSubmit="SaveOrUpdate">
+	<div class="row form-group mb-3">
+		<div class="col-md-2">
+			<label>Title</label>
+		</div>
+		<div class="col-md-4">
+			<InputText @bind-Value="model.Title" class="form-control"></InputText>
+		</div>
+	</div>
+	<div class="row form-group mb-3 ">
+		<div class="col-md-2">
+			<label>Description</label>
+		</div>
+		<div class="col-md-4">
+			<InputTextArea @bind-Value="model.Description" class="form-control"></InputTextArea>
+		</div>
+	</div>
+	<div class="form-group">
+		<input type="submit" class="btn btn-primary" value="@buttonText">
+		<input type="button" class="btn btn-primary" value="Back To List" @onclick="BackToDoList">
+
+	</div>
+</EditForm>
+
+
 
 @code {
 
 	[Parameter]
 	public int TodoId { get; set; }
+
+	Todo model = new Todo();
+
+	[Inject]
+	NavigationManager NavigationManager { get; set; }
+
+	String buttonText = "Save";
+
+	private void SaveOrUpdate()
+	{
+		if (!string.IsNullOrEmpty(model.Title) && !string.IsNullOrEmpty(model.Description))
+		{
+			model.Id = TodoMemoryData.NewId();
+
+			TodoMemoryData.AddTodo(model);
+			BackToDoList();
+		}
+	}
+
+	protected override void OnInitialized()
+	{
+		Console.WriteLine($"TodoAddOrUpdate: {TodoId}");
+		buttonText = TodoId > 0 ? "Update" : buttonText;
+	}
+
+	private void BackToDoList()
+	{
+		NavigationManager.NavigateTo("todo-list");
+	}
 
 }
