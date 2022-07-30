@@ -4,12 +4,20 @@
 </div>
 
 @code {
+
     [Parameter]
-    public string? Title { get; set; }
+
+    public string Title { get; set; }
+
+
 
     public override Task SetParametersAsync(ParameterView parameters)
+
     {
+
         Title = parameters.GetValueOrDefault<String>("Title") ?? "Title boş olamaz!!";
+
         return base.SetParametersAsync(parameters);
+
     }
 }

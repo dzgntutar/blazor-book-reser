@@ -14,9 +14,9 @@ namespace BookReservation.Data.Context
         {
         }
 
-        DbSet<Book>? Books { get; set; }
-        DbSet<User>? Users { get; set; }
-        DbSet<ReservedBook>? ReservedBooks { get; set; }
+        DbSet<Book> Books { get; set; }
+        DbSet<User> Users { get; set; }
+        DbSet<ReservedBook> ReservedBooks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
