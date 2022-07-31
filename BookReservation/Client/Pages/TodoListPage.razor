@@ -13,7 +13,7 @@
 			{
 				foreach (var todo in TodoList)
 				{
-					<TodoComponent Todo="@todo" />
+					<TodoComponent Todo="@todo" Delete="(id) => DeleteTodo(todo.Id)" />
 				}
 			}
 		}
@@ -30,27 +30,34 @@
 	List<Todo> TodoList = new List<Todo>();
 	protected async override Task OnInitializedAsync()
 	{
-		await Task.Delay(10000);
-		//TodoList.Add(new Todo
-		// {
-		// Id = 1,
-		// Title = "Selam",
-		// Description = ""
-		// });
-	}
+		Console.WriteLine("OnInitializedAsync");
 
-	protected override void OnInitialized()
-	{
 		TodoList = TodoMemoryData.TodoList();
 
-		TodoList.ForEach(s => Console.WriteLine($"{s.Id} {s.Title}"));
+		await Task.FromResult("");
 
-		base.OnInitialized();
 	}
+
+	//protected override void OnInitialized()
+	//{
+	// Console.WriteLine("OnInitialized");
+	//
+	// TodoList = TodoMemoryData.TodoList();
+	//
+	// TodoList.ForEach(s => Console.WriteLine($"{s.Id} {s.Title}"));
+	//
+	// base.OnInitialized();
+	//}
 
 	private void GoToTodoAddPage()
 	{
 		NavigationManager.NavigateTo("/todo/add");
+	}
+
+	private void DeleteTodo(int id)
+	{
+		var todo = TodoList.First(s => s.Id == id);
+		TodoList.Remove(todo);
 	}
 
 }
