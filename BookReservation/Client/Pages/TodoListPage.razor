@@ -13,7 +13,7 @@
 			{
 				foreach (var todo in TodoList)
 				{
-					<TodoComponent Todo="@todo" Delete="(id) => DeleteTodo(todo.Id)" />
+					<TodoComponent Todo="@todo" Delete="@(() => DeleteTodo(todo.Id))" />
 				}
 			}
 		}
