@@ -13,7 +13,7 @@
 	</div>
 	<div class="card-footer">
 		<a class="btn btn-success" @onclick="(() => UpdateTodo(Todo.Id))">Update</a>
-		<a class="btn btn-danger" @onclick="() => DeleteTodo(Todo.Id)">Delete</a>
+		<a class="btn btn-danger" @onclick="DeleteTodo">Delete</a>
 	</div>
 </div>
 
@@ -38,12 +38,12 @@
 		NavigationManager.NavigateTo($"/todo/update/{id}");
 	}
 
-	private void DeleteTodo(int id)
+	private void DeleteTodo()
 	{
 		//TodoMemoryData.RemoveTodo(Id);
 		//NavigationManager.NavigateTo("/todo-list");
 
-		Delete.InvokeAsync(id);
+		Delete.InvokeAsync();
 
 	}
 }
