@@ -24,6 +24,12 @@ namespace BookReservation.Client.TodoData
             Todos.Remove(todo);
         }
 
-        public static int NewId() => Todos.Max(s => s.Id) + 1;
+        public static int NewId()
+        {
+            if (Todos?.Count > 0)
+                return Todos.Max(s => s.Id) + 1;
+            else
+                return 1;
+        }
     }
 }
