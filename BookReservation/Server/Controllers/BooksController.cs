@@ -13,18 +13,18 @@ namespace BookReservation.Server.Controllers
     public class BooksController : ControllerBase
     {
         private readonly IBookService bookService;
-        private readonly IMapper mapper;
+        private readonly IMapper _mapper;
 
         public BooksController(IBookService bookService, IMapper mapper)
         {
             this.bookService = bookService;
-            this.mapper = mapper;
+            this._mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var manager = new ServiceManager<Book, BookGetAllDto>(bookService,mapper);
+            var manager = new ServiceManager<Book, BookGetAllDto>(bookService, _mapper);
 
             var data = await manager.GetAll();
 
@@ -34,7 +34,7 @@ namespace BookReservation.Server.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var manager = new ServiceManager<Book, BookGetByIdDto>(bookService, mapper);
+            var manager = new ServiceManager<Book, BookGetByIdDto>(bookService, _mapper);
 
             var data = await manager.GetSingle(id);
 
