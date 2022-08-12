@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Shared.Dtos
+namespace BookReservation.Shared.Dtos
 {
     public class UserGetAllDto
     {
@@ -12,5 +12,7 @@ namespace Shared.Dtos
         public string LastName  { get; set; }
         public string UserName { get; set; }
         public string EmailAddress { get; set; }
+        public int CreateBy { get; set; }
+        public bool IsActive { get; set; }
     }
 }

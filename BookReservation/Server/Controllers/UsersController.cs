@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using BookReservation.Server.Services;
 using AutoMapper;
 using BookReservation.Data.Entities;
-using Shared.Dtos;
+using BookReservation.Shared.Dtos; 
 
 namespace BookReservation.Server.Controllers
 {
@@ -38,5 +38,6 @@ namespace BookReservation.Server.Controllers
 
             return Ok(user);
         }
+
     }
 }

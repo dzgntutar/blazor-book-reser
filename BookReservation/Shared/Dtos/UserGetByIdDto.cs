@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Shared.Dtos
+namespace BookReservation.Shared.Dtos
 {
     public class UserGetByIdDto
     {

@@ -12,13 +12,14 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddBlazoredModal();
 
-//--------------
 builder.Services.ConfigureMapping();
 
 builder.Services.ServiceIntegrationData();
 
 builder.Services.AddScoped<IBookService, BookService>();
-//--------------
+builder.Services.AddScoped<IUserService, UserService>();
+
+
 
 var app = builder.Build();
 
