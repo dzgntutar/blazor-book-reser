@@ -2,45 +2,55 @@
 @inject HttpClient Http
 
 <div class="container">
-    <div class="row">
-        <div class="table">
-            <thead>
-                <th>#</th>
-                <th>FirstName</th>
-                <th>Lastname</th>
-                <th>Email</th>
-                <th>Create Date</th>
-                <th>Active</th>
-            </thead>
-            <tbody>
-                @{
-                    if (userList?.Count > 0)
-                    {
-                        foreach (var user in userList)
-                        {
-                            <tr>
-                                <td>@user.Id</td>
-                                <td>@user.FirstName</td>
-                                <td>@user.LastName</td>
-                                <td>@user.EmailAddress</td>
-                                <td>@user.CreateBy</td>
-                                <td>@user.IsActive</td>
-                            </tr>
-                        }
-                    }
-                }
-            </tbody>
-        </div>
-    </div>
+	<div class="d-flex justify-content-center">
+		@{
+			if (userList?.Count > 0)
+			{
+
+				<table class="table table-striped w-75">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>UserName</th>
+							<th>First Name</th>
+							<th>Last Name</th>
+							<th>Email</th>
+							<th>Create Date</th>
+							<th>Active</th>
+						</tr>
+
+					</thead>
+					<tbody>
+						@foreach (var user in userList)
+						{
+							<tr>
+								<td>@user.Id</td>
+								<td>@user.UserName</td>
+								<td>@user.FirstName</td>
+								<td>@user.LastName</td>
+								<td>@user.EmailAddress</td>
+								<td>@user.CreateBy</td>
+								<td>@user.IsActive</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			}
+			else
+			{
+				<p>No user</p>
+			}
+		}
+	</div>
 </div>
 
 @code {
 
-    List<UserGetAllDto> userList = new List<UserGetAllDto>();
+	List<UserGetAllDto> userList = new List<UserGetAllDto>();
 
 
-    protected override async Task OnInitializedAsync()
-    {
-        userList = await Http.GetFromJsonAsync<List<UserGetAllDto>>("api/users");
-    }
+	protected override async Task OnInitializedAsync()
+	{
+		userList = await Http.GetFromJsonAsync<List<UserGetAllDto>>("api/users");
+	}
 }
