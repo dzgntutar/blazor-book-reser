@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BookReservation.Data.Entities;
 using BookReservation.Server.Services.Abstract;
+using System.Linq.Expressions;
 
 namespace BookReservation.Server.Services
 {
@@ -28,6 +29,13 @@ namespace BookReservation.Server.Services
             var data = await baseService.GetSingle(id);
 
             return mapper.Map<T, D>(data);
+        }
+
+        public async Task<List<D>> Where(Expression<Func<T, bool>> predicate)
+        {
+            var data = await baseService.Where(predicate);
+
+            return mapper.Map<List<T>, List<D>>(data);
         }
 
         //public Task<T> Create(T entity)

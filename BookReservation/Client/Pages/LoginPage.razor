@@ -1,0 +1,37 @@
+﻿@page "/login"
+@inject HttpClient Http
+
+<div class="container">
+	<div class="d-flex justify-content-center">
+		<div class="card w-50 ">
+			<div class="card-body">
+				<EditForm Model="@user">
+					<div class="form-group">
+						<label>Email</label>
+						<InputText class="form-control" @bind-Value="user.Email"></InputText>
+					</div>
+					<div class="form-group">
+						<label>Password</label>
+						<InputText type="password" class="form-control" @bind-Value="user.Password"></InputText>
+					</div>
+					<div class="form-group mt-2">
+						<AddButtonComponent Color="primary" Text="Login" OnClick="Login"></AddButtonComponent>
+					</div>
+				</EditForm>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+@code {
+	UserLoginDto user = new UserLoginDto();
+
+	private void Login()
+	{
+		Console.WriteLine("Login");
+
+		//Http.PostAsync("api/User")
+	}
+
+}

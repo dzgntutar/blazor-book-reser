@@ -1,4 +1,5 @@
 ﻿using BookReservation.Data.Entities;
+using System.Linq.Expressions;
 
 namespace BookReservation.Server.Services.Abstract
 {
@@ -13,5 +14,7 @@ namespace BookReservation.Server.Services.Abstract
         public Task<T> Update(T entity);
 
         public Task Delete(int id);
+
+        public Task<List<T>> Where(Expression<Func<T, bool>> predicate = null);
     }
 }

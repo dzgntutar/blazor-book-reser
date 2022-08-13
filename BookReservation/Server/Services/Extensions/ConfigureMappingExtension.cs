@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BookReservation.Data.Entities;
-using BookReservation.Shared.Dtos;
+using BookReservation.Shared.Dtos.Book;
+using BookReservation.Shared.Dtos.User;
 
 namespace BookReservation.Server.Services.Extensions
 {
@@ -26,6 +27,7 @@ namespace BookReservation.Server.Services.Extensions
 
                 CreateMap<Book, BookGetAllDto>();
                 CreateMap<Book, BookGetByIdDto>();
+                CreateMap<User, UserGetAllDto>();
             }
         }
     }

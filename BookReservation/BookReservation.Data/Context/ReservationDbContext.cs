@@ -46,7 +46,7 @@ namespace BookReservation.Data.Context
                 entity.Property(s => s.LastName).IsRequired().HasMaxLength(50);
                 entity.Property(s => s.UserName).IsRequired().HasMaxLength(50);
                 entity.Property(s => s.Password).IsRequired();
-                entity.Property(s => s.EmailAddress).IsRequired();
+                entity.Property(s => s.Email).IsRequired();
             });
 
             modelBuilder.Entity<Book>()

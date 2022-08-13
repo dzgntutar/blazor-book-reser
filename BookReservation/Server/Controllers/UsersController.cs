@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using BookReservation.Server.Services;
 using AutoMapper;
 using BookReservation.Data.Entities;
-using BookReservation.Shared.Dtos; 
+using BookReservation.Shared.Dtos.User;
 
 namespace BookReservation.Server.Controllers
 {
@@ -37,6 +37,15 @@ namespace BookReservation.Server.Controllers
             var user = await manager.GetSingle(id);
 
             return Ok(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Get(UserLoginDto userLoginDto)
+        {
+            var manager = new ServiceManager<User, UserGetAllDto>(_userService, _mapper);
+            var users = await manager.Where(s => s.Email == userLoginDto.Email && s.Password == userLoginDto.Password);
+
+            return Ok(users);
         }
 
     }

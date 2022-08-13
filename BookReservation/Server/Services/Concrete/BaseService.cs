@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper.QueryableExtensions;
 using AutoMapper;
 using BookReservation.Shared.Dtos;
+using System.Linq.Expressions;
 
 namespace BookReservation.Server.Services.Concrete
 {
@@ -30,6 +31,11 @@ namespace BookReservation.Server.Services.Concrete
             throw new NotImplementedException();
         }
 
+        public async Task<List<T>> Where(Expression<Func<T,bool>> predicate = null)
+        {
+            return  predicate != null ? await reservationDbContext.Set<T>().Where(predicate).ToListAsync() : await reservationDbContext.Set<T>().ToListAsync();
+        }
+
         public async Task<List<T>> GetAll()
         {
             return await reservationDbContext.Set<T>().Where(s => s.IsActive).ToListAsync();
@@ -38,7 +44,6 @@ namespace BookReservation.Server.Services.Concrete
         public async Task<T> GetSingle(int Id)
         {
             return await reservationDbContext.Set<T>().Where(s => s.Id == Id).FirstOrDefaultAsync();
-            //var data = await reservationDbContext.Set<T>().Where(s => s.Id == Id).ProjectTo<D>(mapper.ConfigurationProvider).FirstOrDefaultAsync();
         }
 
         public Task<T> Update(T entity)
