@@ -40,13 +40,15 @@ namespace BookReservation.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Get(UserLoginDto userLoginDto)
+        public async Task<IActionResult> Login(UserLoginDto userLoginDto)
         {
             var manager = new ServiceManager<User, UserGetAllDto>(_userService, _mapper);
-            var users = await manager.Where(s => s.Email == userLoginDto.Email && s.Password == userLoginDto.Password);
+            var users = await manager.Where(s => s.Email == userLoginDto.Email && s.Password == userLoginDto.Password && s.IsActive);
 
-            return Ok(users);
+            if (users?.Count > 0)
+                return Ok(users[0]);
+            else
+                return BadRequest();
         }
-
     }
 }

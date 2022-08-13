@@ -1,4 +1,6 @@
 ﻿@page "/login"
+@using System.Text.Json
+@using System.Text
 @inject HttpClient Http
 
 <div class="container">
@@ -25,13 +27,20 @@
 
 
 @code {
-	UserLoginDto user = new UserLoginDto();
+	UserLoginDto user = new UserLoginDto() { Email = "duzgun@tutar.com", Password = "12341234" };
 
-	private void Login()
+	private async void Login()
 	{
-		Console.WriteLine("Login");
+		var response = await Http.PostAsJsonAsync("/api/users", user);
 
-		//Http.PostAsync("api/User")
+		if (response.IsSuccessStatusCode)
+		{
+			var user = await response.Content.ReadFromJsonAsync<UserGetAllDto>();
+		}
+		else
+		{
+			//Error message
+		}
 	}
 
 }
