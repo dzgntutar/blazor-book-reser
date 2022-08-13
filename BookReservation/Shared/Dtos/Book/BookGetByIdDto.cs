@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookReservation.Shared.Dtos
+namespace BookReservation.Shared.Dtos.Book
 {
     public class BookGetByIdDto : BaseDto
     {

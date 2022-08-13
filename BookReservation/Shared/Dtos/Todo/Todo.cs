@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookReservation.Shared.Dtos
+namespace BookReservation.Shared.Dtos.Todo
 {
     public class Todo
     {
