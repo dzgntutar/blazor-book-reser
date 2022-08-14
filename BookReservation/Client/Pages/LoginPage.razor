@@ -1,6 +1,7 @@
 ﻿@page "/login"
 @using System.Text.Json
 @using System.Text
+@using BookReservation.Client.Utils
 @inject HttpClient Http
 
 <div class="container">
@@ -30,7 +31,19 @@
 
 
 @code {
-	UserLoginDto user = new UserLoginDto() { Email = "duzgun@tutar.com", Password = "12341234" };
+	UserLoginDto user = new UserLoginDto() { Email = "duzgun@tutar.com", Password = "123." };
+
+	[Inject]
+	ILocalStorageService LocalStorageService { get; set; }
+
+	[Inject]
+	AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+	[Inject]
+	HttpClient Client { get; set; }
+
+	[Inject]
+	NavigationManager NavigationManager { get; set; }
 
 	private async void Login()
 	{
@@ -38,7 +51,18 @@
 
 		if (response.IsSuccessStatusCode)
 		{
-			var user = await response.Content.ReadFromJsonAsync<UserGetAllDto>();
+			var data = await response.Content.ReadFromJsonAsync<UserLoginResponseDTO>();
+
+			await LocalStorageService.SetItemAsync("token", data.ApiToken);
+			await LocalStorageService.SetItemAsync("email", data.User.Email);
+			await LocalStorageService.SetItemAsync("userId", data.User.Id);
+			await LocalStorageService.SetItemAsync("userName", $"{data.User.FirstName} {data.User.LastName}");
+
+			(AuthenticationStateProvider as AuthStateProvider).NotifyUserLogin(data.User.Email);
+
+			Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", data.ApiToken);
+
+			NavigationManager.NavigateTo("/");
 		}
 		else
 		{
