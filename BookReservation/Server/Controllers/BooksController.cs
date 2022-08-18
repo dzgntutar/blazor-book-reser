@@ -12,33 +12,26 @@ namespace BookReservation.Server.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly IBookService bookService;
-        private readonly IMapper _mapper;
+        private readonly IBookService _bookService;
 
-        public BooksController(IBookService bookService, IMapper mapper)
+        public BooksController(IBookService bookService)
         {
-            this.bookService = bookService;
-            this._mapper = mapper;
+            _bookService = bookService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var manager = new ServiceManager<Book, BookGetAllDto>(bookService, _mapper);
-
-            var data = await manager.GetAll();
-
-            return Ok(data);
+            var bookList = await _bookService.GetAll<BookGetAllDto>();
+            return Ok(bookList);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var manager = new ServiceManager<Book, BookGetByIdDto>(bookService, _mapper);
+            var book = await _bookService.GetSingle<BookGetByIdDto>(id);
 
-            var data = await manager.GetSingle(id);
-
-            return Ok(data);
+            return Ok(book);
         }
     }
 }

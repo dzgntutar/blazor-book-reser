@@ -1,16 +1,13 @@
-﻿using BookReservation.Server.Services.Abstract;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using BookReservation.Server.Services;
-using AutoMapper;
-using BookReservation.Data.Entities;
+﻿using AutoMapper;
+using BookReservation.Server.Services.Abstract;
+using BookReservation.Shared.Dtos;
 using BookReservation.Shared.Dtos.User;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Authorization;
 
 namespace BookReservation.Server.Controllers
 {
@@ -20,29 +17,23 @@ namespace BookReservation.Server.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IMapper _mapper;
 
-        public UsersController(IUserService userService, IMapper mapper)
+        public UsersController(IUserService userService)
         {
             _userService = userService;
-            this._mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var manager = new ServiceManager<User, UserGetAllDto>(_userService, _mapper);
-            var users = await manager.GetAll();
-
+            var users = await _userService.GetAll<UserGetAllDto>();
             return Ok(users);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var manager = new ServiceManager<User, UserGetByIdDto>(_userService, _mapper);
-            var user = await manager.GetSingle(id);
-
+            var user = await _userService.GetSingle<UserGetByIdDto>(id);
             return Ok(user);
         }
 
@@ -50,8 +41,7 @@ namespace BookReservation.Server.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(UserLoginDto userLoginDto)
         {
-            var manager = new ServiceManager<User, UserGetAllDto>(_userService, _mapper);
-            var users = await manager.Where(s => s.Email == userLoginDto.Email && s.Password == userLoginDto.Password && s.IsActive);
+            var users = await _userService.Where<UserGetAllDto>(s => s.Email == userLoginDto.Email && s.Password == userLoginDto.Password && s.IsActive);
 
             if (users?.Count > 0)
             {

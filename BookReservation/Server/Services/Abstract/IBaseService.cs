@@ -1,20 +1,21 @@
 ﻿using BookReservation.Data.Entities;
+using BookReservation.Shared.Dtos;
 using System.Linq.Expressions;
 
 namespace BookReservation.Server.Services.Abstract
 {
     public interface IBaseService<T> where T : BaseEntity
     {
-        public Task<List<T>> GetAll();
+        public Task<List<D>> GetAll<D>();
 
-        public Task<T> GetSingle(int Id);
+        public Task<D> GetSingle<D>(int Id);
 
-        public Task<T> Create(T entity);
+        public Task<D> Create<D>(T entity);
                     
-        public Task<T> Update(T entity);
+        public Task<D> Update<D>(T entity);
 
         public Task Delete(int id);
 
-        public Task<List<T>> Where(Expression<Func<T, bool>> predicate = null);
+        public Task<List<D>> Where<D>(Expression<Func<T, bool>> predicate = null);
     }
 }

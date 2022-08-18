@@ -12,18 +12,19 @@ namespace BookReservation.Server.Services.Concrete
     public class BaseService<T> : IBaseService<T> where T : BaseEntity
     {
         private readonly ReservationDbContext reservationDbContext;
+        public IMapper mapper;
 
-        public BaseService(ReservationDbContext reservationDbContext )
+        public BaseService(ReservationDbContext reservationDbContext)
         {
             this.reservationDbContext = reservationDbContext;
         }
 
-        public async Task<T> Create(T entity)
+        public async Task<D> Create<D>(T entity)
         {
             await reservationDbContext.Set<T>().AddAsync(entity);
             await reservationDbContext.SaveChangesAsync();
 
-            return entity;
+            return mapper.Map<T,D>(entity);
         }
 
         public Task Delete(int id)
@@ -31,22 +32,26 @@ namespace BookReservation.Server.Services.Concrete
             throw new NotImplementedException();
         }
 
-        public async Task<List<T>> Where(Expression<Func<T,bool>> predicate = null)
+        public async Task<List<D>> Where<D>(Expression<Func<T,bool>> predicate = null)
         {
-            return  predicate != null ? await reservationDbContext.Set<T>().Where(predicate).ToListAsync() : await reservationDbContext.Set<T>().ToListAsync();
+            var resultList =  predicate != null ? await reservationDbContext.Set<T>().Where(predicate).ToListAsync() : await reservationDbContext.Set<T>().ToListAsync();
+
+            return mapper.Map<List<T>, List<D>>(resultList);
         }
 
-        public async Task<List<T>> GetAll()
+        public async Task<List<D>> GetAll<D>()
         {
-            return await reservationDbContext.Set<T>().Where(s => s.IsActive).ToListAsync();
+            var resultList =  await reservationDbContext.Set<T>().Where(s => s.IsActive).ToListAsync();
+            return mapper.Map<List<T>, List<D>>(resultList);
         }
 
-        public async Task<T> GetSingle(int Id)
+        public async Task<D> GetSingle<D>(int Id)
         {
-            return await reservationDbContext.Set<T>().Where(s => s.Id == Id).FirstOrDefaultAsync();
+            var entity =  await reservationDbContext.Set<T>().Where(s => s.Id == Id).FirstOrDefaultAsync();
+            return mapper.Map<T, D>(entity);
         }
 
-        public Task<T> Update(T entity)
+        public Task<D> Update<D>(T entity)
         {
             throw new NotImplementedException();
         }
