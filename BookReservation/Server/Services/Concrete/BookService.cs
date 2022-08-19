@@ -7,7 +7,7 @@ using BookReservation.Shared.Dtos.User;
 
 namespace BookReservation.Server.Services.Concrete
 {
-    public class BookService : BaseService<Book>, IBookService
+    public class BookService : Repository<Book>, IBookService
     {
         private readonly ReservationDbContext reservationDbContext;
 

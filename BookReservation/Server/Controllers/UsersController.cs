@@ -41,33 +41,8 @@ namespace BookReservation.Server.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(UserLoginDto userLoginDto)
         {
-            var users = await _userService.Where<UserGetAllDto>(s => s.Email == userLoginDto.Email && s.Password == userLoginDto.Password && s.IsActive);
-
-            if (users?.Count > 0)
-            {
-                var user = users[0];
-                UserLoginResponseDTO result = new UserLoginResponseDTO();
-
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("secretkey_duzgun_tutar_test_token"));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                var expiry = DateTime.Now.AddDays(1);
-                var claims = new[]
-                {
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Name, user.FirstName),
-                    new Claim(ClaimTypes.UserData, user.Id.ToString())
-                    
-                };
-                var token = new JwtSecurityToken("AAA", "AAA", claims, null, expiry, creds);
-
-                result.ApiToken = new JwtSecurityTokenHandler().WriteToken(token);
-                result.User = user;
-
-                return Ok(result);
-
-            }
-            else
-                return BadRequest();
+            var serviceResult = await _userService.Login(userLoginDto);
+            return serviceResult.IsSucces ? Ok(serviceResult):BadRequest(serviceResult);
         }
     }
 }

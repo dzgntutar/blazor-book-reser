@@ -2,6 +2,7 @@
 @using System.Text.Json
 @using System.Text
 @using BookReservation.Client.Utils
+@using BookReservation.Shared.Dtos
 @inject HttpClient Http
 
 <div class="container">
@@ -21,7 +22,7 @@
 						<InputText type="password" class="form-control" @bind-Value="user.Password"></InputText>
 					</div>
 					<div class="form-group mt-2 d-flex  justify-content-end">
-						<AddButtonComponent Color="primary" Text="Login" OnClick="Login"></AddButtonComponent>
+						<AddButtonComponent Color="primary" Text="Login" OnClick="Login_Click"></AddButtonComponent>
 					</div>
 				</EditForm>
 			</div>
@@ -45,22 +46,22 @@
 	[Inject]
 	NavigationManager NavigationManager { get; set; }
 
-	private async void Login()
+	private async void Login_Click()
 	{
 		var response = await Http.PostAsJsonAsync("/api/users", user);
 
 		if (response.IsSuccessStatusCode)
 		{
-			var data = await response.Content.ReadFromJsonAsync<UserLoginResponseDTO>();
+			var res = await response.Content.ReadFromJsonAsync<GResponse<UserLoginResponseDTO>>();
 
-			await LocalStorageService.SetItemAsync("token", data.ApiToken);
-			await LocalStorageService.SetItemAsync("email", data.User.Email);
-			await LocalStorageService.SetItemAsync("userId", data.User.Id);
-			await LocalStorageService.SetItemAsync("userName", $"{data.User.FirstName} {data.User.LastName}");
+			await LocalStorageService.SetItemAsync("token", res.Data.ApiToken);
+			await LocalStorageService.SetItemAsync("email", res.Data.User.Email);
+			await LocalStorageService.SetItemAsync("userId", res.Data.User.Id);
+			await LocalStorageService.SetItemAsync("userName", $"{res.Data.User.FirstName} {res.Data.User.LastName}");
 
-			(AuthenticationStateProvider as AuthStateProvider).NotifyUserLogin(data.User.Email);
+			(AuthenticationStateProvider as AuthStateProvider).NotifyUserLogin(res.Data.User.Email);
 
-			Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", data.ApiToken);
+			Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", res.Data.ApiToken);
 
 			NavigationManager.NavigateTo("/");
 		}

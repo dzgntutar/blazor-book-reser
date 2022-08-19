@@ -4,7 +4,7 @@ using BookReservation.Shared.Dtos.User;
 
 namespace BookReservation.Server.Services.Abstract
 {
-    public interface IBookService : IBaseService<Book>
+    public interface IBookService : IRepository<Book>
     {
         public User UserGetByUserNameAndPass(string email,string password);
     }

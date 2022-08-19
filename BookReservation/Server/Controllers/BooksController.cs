@@ -30,7 +30,6 @@ namespace BookReservation.Server.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var book = await _bookService.GetSingle<BookGetByIdDto>(id);
-
             return Ok(book);
         }
     }

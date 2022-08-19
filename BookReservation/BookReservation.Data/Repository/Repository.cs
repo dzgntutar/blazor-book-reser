@@ -1,20 +1,19 @@
-﻿using BookReservation.Data.Context;
+﻿using AutoMapper;
+using BookReservation.Data.Context;
 using BookReservation.Data.Entities;
 using BookReservation.Server.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper.QueryableExtensions;
-using AutoMapper;
-using BookReservation.Shared.Dtos;
+
 using System.Linq.Expressions;
 
 namespace BookReservation.Server.Services.Concrete
 {
-    public class BaseService<T> : IBaseService<T> where T : BaseEntity
+    public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         private readonly ReservationDbContext reservationDbContext;
         public IMapper mapper;
 
-        public BaseService(ReservationDbContext reservationDbContext)
+        public Repository(ReservationDbContext reservationDbContext)
         {
             this.reservationDbContext = reservationDbContext;
         }

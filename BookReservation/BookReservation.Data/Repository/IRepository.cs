@@ -1,10 +1,9 @@
 ﻿using BookReservation.Data.Entities;
-using BookReservation.Shared.Dtos;
 using System.Linq.Expressions;
 
 namespace BookReservation.Server.Services.Abstract
 {
-    public interface IBaseService<T> where T : BaseEntity
+    public interface IRepository<T> where T : BaseEntity
     {
         public Task<List<D>> GetAll<D>();
 
