@@ -8,5 +8,6 @@ namespace BookReservation.Shared.Dtos
 {
     public class BaseDto
     {
+        
     }
 }
