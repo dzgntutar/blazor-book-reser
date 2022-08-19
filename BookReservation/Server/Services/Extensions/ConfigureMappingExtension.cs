@@ -28,6 +28,7 @@ namespace BookReservation.Server.Services.Extensions
                 CreateMap<Book, BookGetAllDto>();
                 CreateMap<Book, BookGetByIdDto>();
                 CreateMap<User, UserGetAllDto>();
+                CreateMap<User, UserGetByIdDto>();
             }
         }
     }
