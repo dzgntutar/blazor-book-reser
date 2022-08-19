@@ -30,7 +30,9 @@ namespace BookReservation.Server.Services.Concrete
 
         public Task Delete(int id)
         {
-            throw new NotImplementedException();
+            var entity = reservationDbContext.Set<T>().FirstOrDefault(s => s.Id == id);
+            if (entity == null)
+            reservationDbContext.Remove(id);
         }
 
         public async Task<List<D>> Where<D>(Expression<Func<T,bool>> predicate = null) where D : BaseDto

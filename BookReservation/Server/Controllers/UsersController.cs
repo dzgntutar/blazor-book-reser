@@ -27,14 +27,18 @@ namespace BookReservation.Server.Controllers
         public async Task<IActionResult> Get()
         {
             var users = await _userService.GetAll<UserGetAllDto>();
-            return Ok(users);
+            return Ok(new GResponse<List<UserGetAllDto>>("Success", users));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var user = await _userService.GetSingle<UserGetByIdDto>(id);
-            return Ok(user);
+
+            if (user == null)
+                return NotFound("User not found");
+            else
+                return Ok(new GResponse<UserGetByIdDto>("Success", user));
         }
 
         [HttpPost]
@@ -42,7 +46,7 @@ namespace BookReservation.Server.Controllers
         public async Task<IActionResult> Login(UserLoginDto userLoginDto)
         {
             var serviceResult = await _userService.Login(userLoginDto);
-            return serviceResult.IsSucces ? Ok(serviceResult):BadRequest(serviceResult);
+            return serviceResult.IsSucces ? Ok(serviceResult) : BadRequest(serviceResult);
         }
     }
 }
