@@ -1,8 +1,14 @@
 @page "/user-list"
+@using BookReservation.Client.Utils
+@using BookReservation.Shared.Dtos
 @inject HttpClient Http
 
 <div class="container">
+	<div class="d-flex justify-content-start">
+		<input type="button" class="btn btn-primary btn-sm" @onclick="AddUser" value="New" />
+	</div>
 	<div class="d-flex justify-content-center">
+
 		@{
 			if (userList?.Count > 0)
 			{
@@ -17,6 +23,7 @@
 							<th>Email</th>
 							<th>Create Date</th>
 							<th>Active</th>
+							<th></th>
 						</tr>
 
 					</thead>
@@ -31,6 +38,7 @@
 								<td>@user.Email</td>
 								<td>@user.CreateBy</td>
 								<td>@user.IsActive</td>
+								<td><input type="button" value="Update" @onclick="@(() => UpdateUser(user.Id))"/></td>
 							</tr>
 						}
 					</tbody>
@@ -38,7 +46,7 @@
 			}
 			else
 			{
-				<LoadingSpinnerComponent SpinnerColor="warning"/>
+				<LoadingSpinnerComponent SpinnerColor="warning" />
 			}
 		}
 	</div>
@@ -48,9 +56,32 @@
 
 	List<UserGetAllDto> userList = new List<UserGetAllDto>();
 
+	[Inject]
+	ModalManager ModalManager { get; set; }
+
+	[Inject]
+	NavigationManager NavigationManager { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
-		userList = await Http.GetFromJsonAsync<List<UserGetAllDto>>("api/users");
+		var response = await Http.GetFromJsonAsync<GResponse<List<UserGetAllDto>>>("api/users");
+
+		if (response.IsSucces)
+		{
+			userList = response.Data;
+		}
+		else
+		{
+			await ModalManager.ShowMessageAsync("Warning", response.Message);
+		}
+	}
+
+	private void AddUser(){
+		NavigationManager.NavigateTo("/user/add");
+	}
+
+	private void UpdateUser(int userId)
+	{
+		NavigationManager.NavigateTo($"/user/update/{userId}");
 	}
 }

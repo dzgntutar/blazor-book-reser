@@ -1,0 +1,15 @@
+﻿@page "/user/add"
+@page "/user/update/{UserId:int}"
+
+@code {
+
+	[Parameter]
+	public int UserId { get; set; }
+
+	protected override Task OnInitializedAsync()
+	{
+		Console.WriteLine("User ID: " + UserId);
+
+		return base.OnInitializedAsync();
+	}
+}

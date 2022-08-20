@@ -46,6 +46,9 @@
 	[Inject]
 	NavigationManager NavigationManager { get; set; }
 
+	[Inject]
+	ModalManager ModalManager { get; set; }
+
 	private async void Login_Click()
 	{
 		var response = await Http.PostAsJsonAsync("/api/users", user);
@@ -54,20 +57,28 @@
 		{
 			var res = await response.Content.ReadFromJsonAsync<GResponse<UserLoginResponseDTO>>();
 
-			await LocalStorageService.SetItemAsync("token", res.Data.ApiToken);
-			await LocalStorageService.SetItemAsync("email", res.Data.User.Email);
-			await LocalStorageService.SetItemAsync("userId", res.Data.User.Id);
-			await LocalStorageService.SetItemAsync("userName", $"{res.Data.User.FirstName} {res.Data.User.LastName}");
+			if (res.IsSucces)
+			{
+				await LocalStorageService.SetItemAsync("token", res.Data.ApiToken);
+				await LocalStorageService.SetItemAsync("email", res.Data.User.Email);
+				await LocalStorageService.SetItemAsync("userId", res.Data.User.Id);
+				await LocalStorageService.SetItemAsync("userName", $"{res.Data.User.FirstName} {res.Data.User.LastName}");
 
-			(AuthenticationStateProvider as AuthStateProvider).NotifyUserLogin(res.Data.User.Email);
+				(AuthenticationStateProvider as AuthStateProvider).NotifyUserLogin(res.Data.User.Email);
 
-			Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", res.Data.ApiToken);
+				Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", res.Data.ApiToken);
 
-			NavigationManager.NavigateTo("/");
+				NavigationManager.NavigateTo("/");
+			}
+			else
+			{
+				await ModalManager.ShowMessageAsync("Error", res.Message);
+
+			}
 		}
 		else
 		{
-			//Error message
+			await ModalManager.ShowMessageAsync("Error", "Server Error");
 		}
 	}
 
