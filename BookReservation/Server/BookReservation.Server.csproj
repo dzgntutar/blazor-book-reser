@@ -24,8 +24,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\BookReservation.Data\BookReservation.Data.csproj" />
 		<ProjectReference Include="..\Client\BookReservation.Client.csproj" />
+		<ProjectReference Include="..\Data\BookReservation.Data.csproj" />
 		<ProjectReference Include="..\Shared\BookReservation.Shared.csproj" />
 	</ItemGroup>
 
