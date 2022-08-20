@@ -28,11 +28,16 @@ namespace BookReservation.Server.Services.Concrete
             return mapper.Map<T,D>(entity);
         }
 
-        public Task Delete(int id)
+        public async Task<bool> Delete(int id)
         {
             var entity = reservationDbContext.Set<T>().FirstOrDefault(s => s.Id == id);
             if (entity == null)
-            reservationDbContext.Remove(id);
+                return false;
+
+            reservationDbContext.Set<T>().Remove(entity);
+            int result = await reservationDbContext.SaveChangesAsync();
+
+            return result > 0;
         }
 
         public async Task<List<D>> Where<D>(Expression<Func<T,bool>> predicate = null) where D : BaseDto

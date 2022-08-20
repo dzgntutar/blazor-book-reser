@@ -14,7 +14,7 @@ namespace BookReservation.Server.Services.Abstract
                     
         public Task<D> Update<D>(T entity);
 
-        public Task Delete(int id);
+        public Task<bool> Delete(int id);
 
         public Task<List<D>> Where<D>(Expression<Func<T, bool>> predicate = null) where D : BaseDto;
     }

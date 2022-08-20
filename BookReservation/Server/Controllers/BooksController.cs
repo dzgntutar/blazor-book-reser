@@ -1,10 +1,6 @@
-﻿using AutoMapper;
-using BookReservation.Data.Entities;
-using BookReservation.Server.Services;
-using BookReservation.Server.Services.Abstract;
+﻿using BookReservation.Server.Services.Abstract;
 using BookReservation.Shared.Dtos;
 using BookReservation.Shared.Dtos.Book;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookReservation.Server.Controllers

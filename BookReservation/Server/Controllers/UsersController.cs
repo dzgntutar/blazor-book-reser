@@ -1,13 +1,9 @@
-﻿using AutoMapper;
+﻿using BookReservation.Data.Entities;
 using BookReservation.Server.Services.Abstract;
 using BookReservation.Shared.Dtos;
 using BookReservation.Shared.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace BookReservation.Server.Controllers
 {
@@ -39,6 +35,17 @@ namespace BookReservation.Server.Controllers
                 return NotFound("User not found");
             else
                 return Ok(new GResponse<UserGetByIdDto>("Success", user));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var isSuccess = await _userService.Delete(id);
+
+            if (!isSuccess)
+                return NotFound(new GResponse<bool>("User not found"));
+            else
+                return Ok(new GResponse<bool>("User deleted", true));
         }
 
         [HttpPost]
