@@ -20,12 +20,18 @@ namespace BookReservation.Server.Services.Concrete
             this.reservationDbContext = reservationDbContext;
         }
 
-        public async Task<D> Create<D>(T entity)
+        public async Task<Res> Create<Req,Res>(Req req)
         {
+            T entity = mapper.Map<Req, T>(req);
+
+            entity.CreateDate = DateTime.Now;
+            entity.CreateBy = 1;
+            entity.IsActive = true;
+
             await reservationDbContext.Set<T>().AddAsync(entity);
             await reservationDbContext.SaveChangesAsync();
 
-            return mapper.Map<T,D>(entity);
+            return mapper.Map<T,Res>(entity);
         }
 
         public async Task<bool> Delete(int id)

@@ -4,6 +4,7 @@ using BookReservation.Shared.Dtos;
 using BookReservation.Shared.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.InteropServices;
 
 namespace BookReservation.Server.Controllers
 {
@@ -49,11 +50,28 @@ namespace BookReservation.Server.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> Create(UserSaveRequestDto user)
+        {
+            try
+            {
+                var savedUser = await _userService.Create<UserSaveRequestDto, UserSaveResponseDto>(user);
+                return Ok(new GResponse<UserSaveResponseDto>("Save is successful", savedUser));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new GResponse<UserSaveResponseDto>("Error"));
+            }
+        }
+
+        [HttpPost]
         [AllowAnonymous]
+        [Route("/api/[controller]/login")]
         public async Task<IActionResult> Login(UserLoginDto userLoginDto)
         {
             var serviceResult = await _userService.Login(userLoginDto);
             return serviceResult.IsSucces ? Ok(serviceResult) : BadRequest(serviceResult);
         }
+
+
     }
 }

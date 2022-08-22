@@ -1,5 +1,6 @@
 ﻿@page "/user/add"
 @page "/user/update/{UserId:int}"
+@using BookReservation.Client.Utils
 @using BookReservation.Shared.Dtos
 @inject HttpClient Http
 
@@ -44,6 +45,14 @@
 			<InputText @bind-Value="User.UserName" class="form-control"></InputText>
 		</div>
 	</div>
+	<div class="row form-group mb-3">
+		<div class="col-md-2">
+			<label>Password</label>
+		</div>
+		<div class="col-md-6">
+			<InputText @bind-Value="User.Password" class="form-control"></InputText>
+		</div>
+	</div>
 	<div class="form-group">
 		<input type="submit" class="btn btn-primary" value="@buttonText">
 		<input type="button" class="btn btn-primary" value="Back To List" @onclick="BackToDoList">
@@ -55,9 +64,15 @@
 	[Parameter]
 	public int UserId { get; set; }
 
-	private UserSaveDto User = new UserSaveDto();
+	private UserSaveRequestDto User = new UserSaveRequestDto();
 
 	private string buttonText = "Save";
+
+	[Inject]
+	NavigationManager NavigationManager { get; set; }
+
+	[Inject]
+	ModalManager ModalManager { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -79,14 +94,24 @@
 		}
 	}
 
-	private void SaveOrUpdate()
+	private async Task SaveOrUpdate()
 	{
 		if (UserId > 0)//update
 		{
-
 		}
-		else{//save
-
+		else
+		{//save
+			var response = await Http.PostAsJsonAsync<UserSaveRequestDto>("/api/users", User);
+			if(response.IsSuccessStatusCode)
+			{
+				var result = await response.Content.ReadFromJsonAsync<GResponse<UserSaveResponseDto>>();
+				if(result.IsSucces)
+				{
+					NavigationManager.NavigateTo("/user-list");
+				}
+				else
+					await ModalManager.ShowMessageAsync("Error", result.Message);
+			}
 		}
 	}
 	private void BackToDoList()

@@ -1,6 +1,7 @@
 ﻿using BookReservation.Data.Entities;
 using BookReservation.Shared.Dtos;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace BookReservation.Server.Services.Abstract
 {
@@ -10,8 +11,8 @@ namespace BookReservation.Server.Services.Abstract
 
         public Task<D> GetSingle<D>(int Id) where D : BaseDto;
 
-        public Task<D> Create<D>(T entity);
-                    
+        public Task<Res> Create<Req, Res>(Req req);
+
         public Task<D> Update<D>(T entity);
 
         public Task<bool> Delete(int id);
