@@ -23,19 +23,19 @@ namespace BookReservation.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var users = await _userService.GetAll<UserGetAllDto>();
-            return Ok(new GResponse<List<UserGetAllDto>>("Success", users));
+            var users = await _userService.GetAll<UserGetAllResponseDto>();
+            return Ok(new GResponse<List<UserGetAllResponseDto>>("Success", users));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var user = await _userService.GetSingle<UserGetByIdDto>(id);
+            var user = await _userService.GetSingle<UserGetByIdResponseDto>(id);
 
             if (user == null)
                 return NotFound("User not found");
             else
-                return Ok(new GResponse<UserGetByIdDto>("Success", user));
+                return Ok(new GResponse<UserGetByIdResponseDto>("Success", user));
         }
 
         [HttpDelete("{id}")]
@@ -66,7 +66,7 @@ namespace BookReservation.Server.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("/api/[controller]/login")]
-        public async Task<IActionResult> Login(UserLoginDto userLoginDto)
+        public async Task<IActionResult> Login(UserLoginRequestDto userLoginDto)
         {
             var serviceResult = await _userService.Login(userLoginDto);
             return serviceResult.IsSucces ? Ok(serviceResult) : BadRequest(serviceResult);

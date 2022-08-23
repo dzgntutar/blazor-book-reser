@@ -80,7 +80,7 @@
 
 		if (UserId > 0)
 		{
-			var response = await Http.GetFromJsonAsync<GResponse<UserGetByIdDto>>($"/api/users/{UserId}");
+			var response = await Http.GetFromJsonAsync<GResponse<UserGetByIdResponseDto>>($"/api/users/{UserId}");
 			if (response.IsSucces)
 			{
 				var u = response.Data;

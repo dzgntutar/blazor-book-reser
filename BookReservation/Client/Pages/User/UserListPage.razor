@@ -54,7 +54,7 @@
 
 @code {
 
-	List<UserGetAllDto> userList = new List<UserGetAllDto>();
+	List<UserGetAllResponseDto> userList = new List<UserGetAllResponseDto>();
 
 	[Inject]
 	ModalManager ModalManager { get; set; }
@@ -64,7 +64,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		var response = await Http.GetFromJsonAsync<GResponse<List<UserGetAllDto>>>("api/users");
+		var response = await Http.GetFromJsonAsync<GResponse<List<UserGetAllResponseDto>>>("api/users");
 
 		if (response.IsSucces)
 		{

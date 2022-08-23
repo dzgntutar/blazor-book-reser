@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookReservation.Shared.Dtos.User
 {
-	public class UserLoginDto : BaseDto
+	public class UserLoginRequestDto : BaseDto
 	{
         public string Email { get; set; }
 

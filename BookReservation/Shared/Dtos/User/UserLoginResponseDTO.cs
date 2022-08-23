@@ -10,6 +10,6 @@ namespace BookReservation.Shared.Dtos.User
     {
         public String ApiToken { get; set; }
 
-        public UserGetAllDto User { get; set; }
+        public UserGetAllResponseDto User { get; set; }
     }
 }

@@ -19,9 +19,9 @@ namespace BookReservation.Server.Services.Concrete
             base.mapper = mapper;
         }
 
-        public async Task<GResponse<UserLoginResponseDTO>> Login(UserLoginDto userLoginDto)
+        public async Task<GResponse<UserLoginResponseDTO>> Login(UserLoginRequestDto userLoginDto)
         {
-            var users = await this.Where<UserGetAllDto>(s => s.Email == userLoginDto.Email && s.Password == userLoginDto.Password && s.IsActive);
+            var users = await this.Where<UserGetAllResponseDto>(s => s.Email == userLoginDto.Email && s.Password == userLoginDto.Password && s.IsActive);
 
             if (users?.Count > 0)
             {

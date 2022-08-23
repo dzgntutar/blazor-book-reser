@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BookReservation.Shared.Dtos.User
 {
-    public class UserGetByIdDto : BaseDto
+    public class UserGetByIdResponseDto : BaseDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
