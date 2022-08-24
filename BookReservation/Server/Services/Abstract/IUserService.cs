@@ -6,6 +6,6 @@ namespace BookReservation.Server.Services.Abstract
 {
     public interface IUserService : IRepository<User>
     {
-        Task<GResponse<UserLoginResponseDTO>> Login(UserLoginRequestDto userLoginDto);
+        Task<UserLoginResponseDTO> Login(UserLoginRequestDto userLoginDto);
     }
 }

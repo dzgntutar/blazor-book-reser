@@ -11,7 +11,7 @@ using System.Text;
 
 namespace BookReservation.Server.Services.Concrete
 {
-    public class UserService: Repository<User> ,IUserService
+    public class UserService : Repository<User>, IUserService
     {
 
         public UserService(ReservationDbContext reservationDbContext, IMapper mapper) : base(reservationDbContext)
@@ -19,35 +19,33 @@ namespace BookReservation.Server.Services.Concrete
             base.mapper = mapper;
         }
 
-        public async Task<GResponse<UserLoginResponseDTO>> Login(UserLoginRequestDto userLoginDto)
+        public async Task<UserLoginResponseDTO> Login(UserLoginRequestDto userLoginDto)
         {
             var users = await this.Where<UserGetAllResponseDto>(s => s.Email == userLoginDto.Email && s.Password == userLoginDto.Password && s.IsActive);
 
-            if (users?.Count > 0)
-            {
-                var user = users[0];
-                UserLoginResponseDTO result = new UserLoginResponseDTO();
+            if (users == null || users.Count == 0)
+                throw new Exception("User not found");
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("secretkey_duzgun_tutar_test_token"));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                var expiry = DateTime.Now.AddDays(1);
-                var claims = new[]
-                {
+
+            var user = users[0];
+            UserLoginResponseDTO result = new UserLoginResponseDTO();
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("secretkey_duzgun_tutar_test_token"));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expiry = DateTime.Now.AddDays(1);
+            var claims = new[]
+            {
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.Name, user.FirstName),
                     new Claim(ClaimTypes.UserData, user.Id.ToString())
 
                 };
-                var token = new JwtSecurityToken("AAA", "AAA", claims, null, expiry, creds);
+            var token = new JwtSecurityToken("AAA", "AAA", claims, null, expiry, creds);
 
-                result.ApiToken = new JwtSecurityTokenHandler().WriteToken(token);
-                result.User = user;
+            result.ApiToken = new JwtSecurityTokenHandler().WriteToken(token);
+            result.User = user;
 
-                return new GResponse<UserLoginResponseDTO>("Success login", result);
-
-            }
-            else
-                return new GResponse<UserLoginResponseDTO>("User not found");
+            return  result;
         }
     }
 }

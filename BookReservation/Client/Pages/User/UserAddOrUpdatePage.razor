@@ -130,7 +130,7 @@
 				var result = await response.Content.ReadFromJsonAsync<GResponse<UserSaveResponseDto>>();
 				if (result.IsSucces)
 				{
-					NavigationManager.NavigateTo("/user-list");
+					BackToDoList();
 				}
 				else
 					await ModalManager.ShowMessageAsync("Error", result.Message);
@@ -139,6 +139,6 @@
 	}
 	private void BackToDoList()
 	{
-
+		NavigationManager.NavigateTo("/user-list");
 	}
 }

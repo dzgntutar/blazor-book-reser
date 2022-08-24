@@ -82,8 +82,16 @@ namespace BookReservation.Server.Controllers
         [Route("/api/[controller]/login")]
         public async Task<IActionResult> Login(UserLoginRequestDto userLoginDto)
         {
-            var serviceResult = await _userService.Login(userLoginDto);
-            return serviceResult.IsSucces ? Ok(serviceResult) : BadRequest(serviceResult);
+            try
+            {
+                var serviceResult = await _userService.Login(userLoginDto);
+                return Ok(new GResponse<UserLoginResponseDTO>("Success", serviceResult));
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(new GResponse<UserLoginResponseDTO>(ex.Message));
+            }
         }
     }
 }
