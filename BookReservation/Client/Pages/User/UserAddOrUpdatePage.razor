@@ -29,14 +29,26 @@
 			<InputText @bind-Value="User.LastName" class="form-control"></InputText>
 		</div>
 	</div>
-	<div class="row form-group mb-3">
-		<div class="col-md-2">
-			<label>Email</label>
+	@if (UserId > 0)
+	{
+		<div class="row form-group mb-3">
+			<div class="col-md-2">
+				<label>Email</label>
+			</div>
+			<div class="col-md-6">
+				<InputText @bind-Value="User.Email" class="form-control"></InputText>
+			</div>
 		</div>
-		<div class="col-md-6">
-			<InputText @bind-Value="User.Email" class="form-control"></InputText>
+		<div class="row form-group mb-3">
+			<div class="col-md-2">
+				<label>Password</label>
+			</div>
+			<div class="col-md-6">
+				<InputText @bind-Value="User.Password" class="form-control"></InputText>
+			</div>
 		</div>
-	</div>
+	}
+
 	<div class="row form-group mb-3">
 		<div class="col-md-2">
 			<label>User Name</label>
@@ -45,14 +57,7 @@
 			<InputText @bind-Value="User.UserName" class="form-control"></InputText>
 		</div>
 	</div>
-	<div class="row form-group mb-3">
-		<div class="col-md-2">
-			<label>Password</label>
-		</div>
-		<div class="col-md-6">
-			<InputText @bind-Value="User.Password" class="form-control"></InputText>
-		</div>
-	</div>
+
 	<div class="form-group">
 		<input type="submit" class="btn btn-primary" value="@buttonText">
 		<input type="button" class="btn btn-primary" value="Back To List" @onclick="BackToDoList">
@@ -96,16 +101,34 @@
 
 	private async Task SaveOrUpdate()
 	{
-		if (UserId > 0)//update
+		if (UserId > 0)
 		{
+			UserUpdateRequestDto userUpdateRequestDto = new UserUpdateRequestDto();
+			userUpdateRequestDto.Id = UserId;
+			userUpdateRequestDto.FirstName = User.FirstName;
+			userUpdateRequestDto.LastName = User.LastName;
+			userUpdateRequestDto.UserName = User.UserName;
+
+			var response = await Http.PutAsJsonAsync<UserUpdateRequestDto>("/api/users", userUpdateRequestDto);
+			if (response.IsSuccessStatusCode)
+			{
+				var result = await response.Content.ReadFromJsonAsync<GResponse<UserUpdateRequestDto>>();
+				if (result.IsSucces)
+				{
+					NavigationManager.NavigateTo("/user-list");
+				}
+				else
+					await ModalManager.ShowMessageAsync("Error", result.Message);
+			}
+
 		}
 		else
-		{//save
+		{
 			var response = await Http.PostAsJsonAsync<UserSaveRequestDto>("/api/users", User);
-			if(response.IsSuccessStatusCode)
+			if (response.IsSuccessStatusCode)
 			{
 				var result = await response.Content.ReadFromJsonAsync<GResponse<UserSaveResponseDto>>();
-				if(result.IsSucces)
+				if (result.IsSucces)
 				{
 					NavigationManager.NavigateTo("/user-list");
 				}

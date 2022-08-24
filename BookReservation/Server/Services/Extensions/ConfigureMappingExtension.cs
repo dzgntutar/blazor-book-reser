@@ -33,6 +33,12 @@ namespace BookReservation.Server.Services.Extensions
                 CreateMap<User, UserSaveRequestDto>().ReverseMap();
                 CreateMap<User, UserSaveResponseDto>().ReverseMap();
 
+                CreateMap<UserUpdateRequestDto, User>()
+                                                       .ForMember(s => s.FirstName,m => m.MapFrom(n => n.FirstName))
+                                                       .ForMember(s => s.LastName, m => m.MapFrom(n => n.LastName))
+                                                       .ForMember(s => s.UserName, m => m.MapFrom(n => n.UserName));
+
+                CreateMap<User, UserUpdateResponseDto>().ReverseMap();
             }
         }
     }

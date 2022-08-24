@@ -36,7 +36,7 @@ namespace BookReservation.Server.Services.Concrete
 
         public async Task<bool> Delete(int id)
         {
-            var entity = reservationDbContext.Set<T>().FirstOrDefault(s => s.Id == id);
+            var entity = await reservationDbContext.Set<T>().FirstOrDefaultAsync(s => s.Id == id);
             if (entity == null)
                 return false;
 
@@ -80,9 +80,19 @@ namespace BookReservation.Server.Services.Concrete
             return entity;
         }
 
-        public Task<D> Update<D>(T entity)
+        public async Task<Res> Update<Req,Res>(Req req, int Id)
         {
-            throw new NotImplementedException();
+            var entity = await reservationDbContext.Set<T>().FirstOrDefaultAsync(s => s.Id == Id);
+            if (entity == null)
+                throw new Exception("Entity not found!");
+
+            mapper.Map(req,entity);
+            entity.UpdateDate = DateTime.Now;
+            entity.UpdateBy = 1;
+
+            await reservationDbContext.SaveChangesAsync();
+
+            return mapper.Map<T, Res>(entity);
         }
     }
 }

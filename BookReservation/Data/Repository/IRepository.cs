@@ -13,7 +13,7 @@ namespace BookReservation.Server.Services.Abstract
 
         public Task<Res> Create<Req, Res>(Req req);
 
-        public Task<D> Update<D>(T entity);
+        public Task<Res> Update<Req, Res>(Req req, int Id);
 
         public Task<bool> Delete(int id);
 

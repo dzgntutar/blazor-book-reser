@@ -63,6 +63,20 @@ namespace BookReservation.Server.Controllers
             }
         }
 
+        [HttpPut]
+        public async Task<IActionResult> Update(UserUpdateRequestDto userUpdateRequestDto)
+        {
+            try
+            {
+                var updatedUser = await _userService.Update<UserUpdateRequestDto, UserUpdateResponseDto>(userUpdateRequestDto,userUpdateRequestDto.Id);
+                return Ok(new GResponse<UserUpdateResponseDto>("Success", updatedUser));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new GResponse<UserUpdateResponseDto>(ex.Message));
+            }
+        }
+
         [HttpPost]
         [AllowAnonymous]
         [Route("/api/[controller]/login")]
@@ -71,7 +85,5 @@ namespace BookReservation.Server.Controllers
             var serviceResult = await _userService.Login(userLoginDto);
             return serviceResult.IsSucces ? Ok(serviceResult) : BadRequest(serviceResult);
         }
-
-
     }
 }
