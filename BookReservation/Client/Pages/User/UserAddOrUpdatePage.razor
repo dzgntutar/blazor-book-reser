@@ -29,7 +29,7 @@
 			<InputText @bind-Value="User.LastName" class="form-control"></InputText>
 		</div>
 	</div>
-	@if (UserId > 0)
+	@if (UserId <= 0)
 	{
 		<div class="row form-group mb-3">
 			<div class="col-md-2">

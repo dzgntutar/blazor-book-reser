@@ -13,7 +13,7 @@
 			if (userList?.Count > 0)
 			{
 
-				<table class="table table-striped w-75">
+				<table class="table table-striped">
 					<thead>
 						<tr>
 							<th>#</th>
@@ -38,7 +38,10 @@
 								<td>@user.Email</td>
 								<td>@user.CreateBy</td>
 								<td>@user.IsActive</td>
-								<td><input type="button" class="btn btn-primary" value="Update" @onclick="@(() => UpdateUser(user.Id))"/></td>
+								<td>
+									<input type="button" class="btn btn-primary" value="Update" @onclick="@(() => UpdateUser(user.Id))"/>
+									<input type="button" class="btn btn-danger" value="Delete" @onclick="@(() => DeleteUser(user.Id))" />
+								</td>
 							</tr>
 						}
 					</tbody>
@@ -55,6 +58,7 @@
 @code {
 
 	List<UserGetAllResponseDto> userList = new List<UserGetAllResponseDto>();
+
 
 	[Inject]
 	ModalManager ModalManager { get; set; }
@@ -83,5 +87,19 @@
 	private void UpdateUser(int userId)
 	{
 		NavigationManager.NavigateTo($"/user/update/{userId}");
+	}
+
+	private async Task DeleteUser(int userId)
+	{
+		var response = await Http.DeleteAsync($"api/users/{userId}");
+
+		if(response.IsSuccessStatusCode)
+		{
+			userList.Remove(userList.First(s => s.Id == userId));
+		}
+		else
+		{
+			await ModalManager.ShowMessageAsync("Hata", "Silme iþlemi sýrasýnda bir hata meydana geldi!");
+		}
 	}
 }
