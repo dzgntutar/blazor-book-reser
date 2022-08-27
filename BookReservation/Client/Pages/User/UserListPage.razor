@@ -10,9 +10,9 @@
 	<div class="d-flex justify-content-center">
 
 		@{
-			if (userList?.Count > 0)
+			@if (!showSpinner)
 			{
-
+			//
 				<table class="table table-striped">
 					<thead>
 						<tr>
@@ -28,22 +28,30 @@
 
 					</thead>
 					<tbody>
-						@foreach (var user in userList)
+						@if (userList?.Count > 0)
 						{
-							<tr>
-								<td>@user.Id</td>
-								<td>@user.FirstName</td>
-								<td>@user.LastName</td>
-								<td>@user.UserName</td>
-								<td>@user.Email</td>
-								<td>@user.CreateBy</td>
-								<td>@user.IsActive</td>
-								<td>
-									<input type="button" class="btn btn-primary" value="Update" @onclick="@(() => UpdateUser(user.Id))"/>
-									<input type="button" class="btn btn-danger" value="Delete" @onclick="@(() => DeleteUser(user.Id))" />
-								</td>
-							</tr>
+							@foreach (var user in userList)
+							{
+								<tr>
+									<td>@user.Id</td>
+									<td>@user.FirstName</td>
+									<td>@user.LastName</td>
+									<td>@user.UserName</td>
+									<td>@user.Email</td>
+									<td>@user.CreateDate</td>
+									<td>@user.IsActive</td>
+									<td>
+										<input type="button" class="btn btn-primary" value="Update" @onclick="@(() => UpdateUser(user.Id))" />
+										<input type="button" class="btn btn-danger" value="Delete" @onclick="@(() => DeleteUser(user.Id))" />
+									</td>
+								</tr>
+							}
 						}
+						else
+						{
+							<tr>No content</tr>
+						}
+
 					</tbody>
 				</table>
 			}
@@ -59,6 +67,7 @@
 
 	List<UserGetAllResponseDto> userList = new List<UserGetAllResponseDto>();
 
+	bool showSpinner = true;
 
 	[Inject]
 	ModalManager ModalManager { get; set; }
@@ -73,6 +82,7 @@
 		if (response.IsSucces)
 		{
 			userList = response.Data;
+			showSpinner = false;
 		}
 		else
 		{
@@ -80,7 +90,8 @@
 		}
 	}
 
-	private void AddUser(){
+	private void AddUser()
+	{
 		NavigationManager.NavigateTo("/user/add");
 	}
 
@@ -91,11 +102,14 @@
 
 	private async Task DeleteUser(int userId)
 	{
+		showSpinner = true;
+
 		var response = await Http.DeleteAsync($"api/users/{userId}");
 
-		if(response.IsSuccessStatusCode)
+		if (response.IsSuccessStatusCode)
 		{
 			userList.Remove(userList.First(s => s.Id == userId));
+			showSpinner = false;
 		}
 		else
 		{
