@@ -77,17 +77,26 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		var response = await Http.GetFromJsonAsync<GResponse<List<UserGetAllResponseDto>>>("api/users");
+		try
+		{
+			var response = await Http.GetFromJsonAsync<GResponse<List<UserGetAllResponseDto>>>("api/users");
 
-		if (response.IsSucces)
-		{
-			userList = response.Data;
-			showSpinner = false;
+			if (response.IsSucces)
+			{
+				userList = response.Data;
+				showSpinner = false;
+			}
+			else
+			{
+				await ModalManager.ShowMessageAsync("Warning", response.Message);
+			}
 		}
-		else
+		catch (Exception e)
 		{
-			await ModalManager.ShowMessageAsync("Warning", response.Message);
+			await ModalManager.ShowMessageAsync("Error", e.Message, 5000);
+			NavigationManager.NavigateTo("/logout");
 		}
+		
 	}
 
 	private void AddUser()
